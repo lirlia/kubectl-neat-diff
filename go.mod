@@ -4,7 +4,9 @@ go 1.15
 
 require (
 	github.com/go-clix/cli v0.2.0
+	github.com/hashicorp/go-version v1.3.0 // indirect
 	github.com/itaysk/kubectl-neat v1.2.0
+	github.com/mitchellh/gox v1.0.1 // indirect
 	sigs.k8s.io/yaml v1.1.0
 )
 
