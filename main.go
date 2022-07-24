@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 
 	"github.com/go-clix/cli"
 	neat "github.com/itaysk/kubectl-neat/cmd"
@@ -16,8 +17,14 @@ func main() {
 
 	cmd := cli.Command{
 		Use:   "kubectl-neat-diff [file1] [file2]",
-		Short: "Remove fields from kubectl diff that carry low / no information",
+		Short: "Remove fields from kubectl diff that carry low / no information (`KUBE_NEAT_DIFF_OPTS` is diff options, default is `-uN`)",
 		Args:  cli.ArgsExact(2),
+	}
+
+	var diffOpts []string
+	diffOpts = strings.Fields(os.Getenv("KUBE_NEAT_DIFF_OPTS"))
+	if len(diffOpts) == 0 {
+		diffOpts = []string{"-uN"}
 	}
 
 	cmd.Run = func(cmd *cli.Command, args []string) error {
@@ -28,7 +35,9 @@ func main() {
 			return err
 		}
 
-		c := exec.Command("diff", "-uN", args[0], args[1])
+		diffOpts = append(diffOpts, args[0])
+		diffOpts = append(diffOpts, args[1])
+		c := exec.Command("diff", diffOpts...)
 		c.Stdout = os.Stdout
 		c.Stderr = os.Stderr
 		return c.Run()
