@@ -31,6 +31,13 @@ To use, set it as your `KUBECTL_EXTERNAL_DIFF` tool:
 export KUBECTL_EXTERNAL_DIFF=kubectl-neat-diff
 ```
 
+if you use `KUBE_NEAT_DIFF_OPTS`, pass the diff options to `kube-neat-diff`.
+ex: this command ignores image difference between k8s cluster and sample.yaml.
+
+```bash
+KUBE_NEAT_DIFF_OPTS="-uN -Iimage" KUBECTL_EXTERNAL_DIFF=kubectl-neat-diff kubectl diff -f sample.yaml
+```
+
 ## Why?
 
 Newer Kubernetes versions (1.18+) add a jungle of keys to any YAML / JSON output that roughly looks like this:
